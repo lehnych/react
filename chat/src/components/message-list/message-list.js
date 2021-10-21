@@ -1,7 +1,6 @@
 import {Input, InputAdornment} from "@mui/material";
 import {Send} from "@mui/icons-material";
-import { createStyles, makeStyles } from "@mui/styles";
-import {useState, useEffect} from "react";
+import {createStyles, makeStyles} from "@mui/styles";
 import {Message} from "./message";
 import styles from "./message-list.module.css";
 
@@ -10,61 +9,43 @@ const useStyles = makeStyles((ctx) => {
         input: {
             color: "#9a9fa1",
             padding: "10px 15px",
-            fontSize: "15px"
-        }
+            fontSize: "15px",
+        },
     });
 });
 
-
-export const MessageList = () => {
+export const MessageList = ({
+    messages,
+    sendMessage,
+    value,
+    handleChangeValue,
+}) => {
     const s = useStyles();
-    const [value, setValue] = useState("");
-    const [messages, setMessages] = useState([
-        {value: "Hello", author: "User"},
-        {value: "Hello !", author: "Bot"},
-    ]);
-
-    const handleSendMessage = () => {
-        if (value) {
-            setMessages((state) => [...state, {value, author: "User"}]);
-            setValue("");
-        }
-    };
 
     const handlePressInput = ({code}) => {
         if (code === "Enter" && value) {
-            handleSendMessage();
+            sendMessage({value, author: "User"});
         }
     };
 
-    useEffect(() => {
-        const lastMessage = messages[messages.length - 1];
-        let timerId = null;
-
-        if (lastMessage?.author === "User") {
-            timerId = setTimeout(() => {
-                setMessages((state) => [
-                    ...state,
-                    {value: "Helloo from bot", author: "Bot"},
-                ]);
-            }, 1500);
+    const handleSendMessage = () => {
+        if (value) {
+            sendMessage({value, author: "User"});
         }
-
-        return () => clearInterval(timerId);
-    }, [messages]);
+    };
 
     return (
-        <div className={s.wrapper}>
+        <>
             <div>
                 {messages.map((message, id) => (
-                    <Message key={id} message={message}/>
+                    <Message key={message.value} message={message}/>
                 ))}
             </div>
 
             <Input
                 className={s.input}
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={handleChangeValue}
                 placeholder="Введите сообщение..."
                 fullWidth={true}
                 onKeyPress={handlePressInput}
@@ -76,6 +57,6 @@ export const MessageList = () => {
                     </InputAdornment>
                 }
             />
-        </div>
+        </>
     );
 };
