@@ -1,10 +1,20 @@
 import ReactDOM from 'react-dom';
-import {MessageList} from './components';
+import { ThemeProvider, createTheme } from "@mui/material";
+import {Layout, MessageList, ChatList} from './components';
 import './index.css';
 
+const light = createTheme({
+    theme: {
+        color: "red",
+    },
+});
+
 ReactDOM.render(
-    <div>
-        <MessageList />
-    </div>,
+    <ThemeProvider theme={light}>
+        <Layout
+            chats={<ChatList />}
+            messages={<MessageList />}
+        />
+    </ThemeProvider>,
     document.getElementById('root')
 );
