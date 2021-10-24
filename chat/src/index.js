@@ -1,7 +1,13 @@
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
+import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
-import {Layout, MessageList, ChatList} from './components';
-import './index.css';
+import React from "react";
+import { HomePage } from "./pages";
+import { ChatPage } from "./pages";
+import { AccountPage } from "./pages";
+import { ErrorPage } from "./pages";
+
+import "./index.css";
 
 const light = createTheme({
     theme: {
@@ -9,12 +15,30 @@ const light = createTheme({
     },
 });
 
-ReactDOM.render(
-    <ThemeProvider theme={light}>
-        <Layout
-            chats={<ChatList />}
-            messages={<MessageList />}
-        />
-    </ThemeProvider>,
-    document.getElementById('root')
-);
+const App = () => {
+    return (
+        <BrowserRouter>
+            <ThemeProvider theme={light}>
+                <Switch>
+                    <Route exact path="/">
+                        <HomePage />
+                    </Route>
+
+                    <Route path="/chat">
+                        <ChatPage />
+                    </Route>
+
+                    <Route path="/account">
+                        <AccountPage />
+                    </Route>
+
+                    <Route path="*">
+                        <ErrorPage />
+                    </Route>
+                </Switch>
+            </ThemeProvider>
+        </BrowserRouter>
+    );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
