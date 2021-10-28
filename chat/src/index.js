@@ -1,12 +1,13 @@
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
+import { Provider } from "react-redux";
+import { BrowserRouter, Route, Switch} from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
 import React from "react";
 import { HomePage } from "./pages";
 import { ChatPage } from "./pages";
-import { AccountPage } from "./pages";
+import { ProfilePage } from "./pages";
 import { ErrorPage } from "./pages";
-
+import { store } from "./store";
 import "./index.css";
 
 const light = createTheme({
@@ -17,27 +18,29 @@ const light = createTheme({
 
 const App = () => {
     return (
-        <BrowserRouter>
-            <ThemeProvider theme={light}>
-                <Switch>
-                    <Route exact path="/">
-                        <HomePage />
-                    </Route>
+        <Provider store={store}>
+            <BrowserRouter>
+                <ThemeProvider theme={light}>
+                    <Switch>
+                        <Route exact path="/">
+                            <HomePage />
+                        </Route>
 
-                    <Route path="/chat">
-                        <ChatPage />
-                    </Route>
+                        <Route path="/chat">
+                            <ChatPage />
+                        </Route>
 
-                    <Route path="/account">
-                        <AccountPage />
-                    </Route>
+                        <Route path="/profile">
+                            <ProfilePage />
+                        </Route>
 
-                    <Route path="*">
-                        <ErrorPage />
-                    </Route>
-                </Switch>
-            </ThemeProvider>
-        </BrowserRouter>
+                        <Route path="*">
+                            <ErrorPage />
+                        </Route>
+                    </Switch>
+                </ThemeProvider>
+            </BrowserRouter>
+        </Provider>
     );
 };
 

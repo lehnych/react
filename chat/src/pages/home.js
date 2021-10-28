@@ -8,7 +8,7 @@ export function HomePage() {
             <h1>Home</h1>
             <hr />
             <ul>
-                <li><Link to="/account">My Account</Link></li>
+                <li><Link to="/profile">My Account</Link></li>
                 <li><Link to="/chat">go to Chat</Link></li>
             </ul>
         </div>
