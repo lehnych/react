@@ -1,17 +1,17 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
-import {nanoid} from "nanoid";
-import {useParams} from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { nanoid } from "nanoid";
+import { useParams } from "react-router-dom";
 
-export function MessageProvider({children}) {
-    const {roomId} = useParams();
+export function MessageProvider({ children }) {
+    const { roomId } = useParams();
 
     const [conversations, setConversations] = useState([
-        {title: "room1", value: ""},
-        {title: "room2", value: ""},
+        { title: "room1", value: "" },
+        { title: "room2", value: "" },
     ]);
     const [messages, setMessages] = useState({
-        room1: [{value: "Room1", author: "Bot", id: nanoid()}],
-        room2: [{value: "Room2", author: "Bot", id: nanoid()}],
+        room1: [{ value: "Room1", author: "Bot", id: nanoid() }],
+        room2: [{ value: "Room2", author: "Bot", id: nanoid() }],
     });
 
     const updateConversationsValue = useCallback(
@@ -19,7 +19,7 @@ export function MessageProvider({children}) {
             setConversations((conversations) => {
                 return conversations.map((conversation) => {
                     return conversation.title === roomId
-                        ? {...conversation, value}
+                        ? { ...conversation, value }
                         : conversation;
                 });
             });
@@ -45,8 +45,16 @@ export function MessageProvider({children}) {
 
                 updateConversationsValue(value);
             },
+            createConversation: () => {
+                const title = prompt("введите название беседы:");
+
+                setConversations((conversations) => [
+                    ...conversations,
+                    { title, value: "" },
+                ]);
+            },
             sendMessage: (message) => {
-                const newMessage = {...message, id: new Date()};
+                const newMessage = { ...message, id: new Date() };
 
                 setMessages((messages) => {
                     return {
@@ -67,7 +75,7 @@ export function MessageProvider({children}) {
 
         if (lastMessage?.author === "User") {
             timerId = setTimeout(() => {
-                actions.sendMessage({value: "Hello from Bot", author: "Bot"});
+                actions.sendMessage({ value: "Hello from Bot", author: "Bot" });
             }, 500);
         }
 
